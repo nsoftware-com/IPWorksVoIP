@@ -1,5 +1,5 @@
 (*
- * IPWorks VoIP 2022 Delphi Edition - Sample Project
+ * IPWorks VoIP 2024 Delphi Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks VoIP in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -43,10 +43,12 @@ type
     procedure btnActivateClick(Sender: TObject);
     procedure ipvIVR1Log(Sender: TObject; LogLevel: Integer; const Message,
       LogType: string);
-    procedure ipvIVR1IncomingCall(Sender: TObject; const CallId: string);
+    procedure ipvIVR1IncomingCall(Sender: TObject; const CallId, RemoteUser,
+      RequestURI, ToURI: string);
     procedure ipvIVR1CallReady(Sender: TObject; const CallId: string);
     procedure ipvIVR1CallTerminated(Sender: TObject; const CallId: string);
-    procedure ipvIVR1Played(Sender: TObject; const CallId: string);
+    procedure ipvIVR1Played(Sender: TObject; const CallId: string;
+      const Completed: Boolean);
     procedure ipvIVR1Digit(Sender: TObject; const CallId, Digit: string);
     procedure Timer1Timer(Sender: TObject);
   private
@@ -143,7 +145,8 @@ begin
     digitList.AddOrSetValue(CallId, '');
 end;
 
-procedure TFormIvr.ipvIVR1IncomingCall(Sender: TObject; const CallId: string);
+procedure TFormIvr.ipvIVR1IncomingCall(Sender: TObject; const CallId,
+  RemoteUser, RequestURI, ToURI: string);
 var
   item: TListItem;
 begin
@@ -160,7 +163,8 @@ begin
   memoLog.Lines.Add(LogType + ': ' + Message) ;
 end;
 
-procedure TFormIvr.ipvIVR1Played(Sender: TObject; const CallId: string);
+procedure TFormIvr.ipvIVR1Played(Sender: TObject; const CallId: string;
+  const Completed: Boolean);
 var
   currentDigits: String;
 begin
